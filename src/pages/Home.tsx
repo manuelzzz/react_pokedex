@@ -10,49 +10,65 @@ export const Home = () => {
     const [pokemons, setPokemons] = useState<IPokemon[]>([]);
 
     useEffect(() => {
-        getPokemons()
+        getPokemons();
     }, []);
 
     const getPokemons = () => {
         var endpoints: string[] = [];
 
-        for (var i = 1; i <= 200; i++) {
+        for (var i = 1; i <= 100; i++) {
             endpoints.push(`https://pokeapi.co/api/v2/pokemon/${i}`);
         }
 
         axios.all(
-            endpoints.map((endpoint) =>
-                axios.get(endpoint)
-                    .then((res) => {
-                        setPokemons((p) => [...p, {
-                            height: res.data.height,
-                            id: res.data.id,
-                            name: res.data.name,
-                            front_default: res.data.sprites.front_default,
-                            weight: res.data.weight,
-                        }
-                        ]);
-                    })
-                    .catch((err) => console.error('At axios.get', err))
-            ),
-        ).catch((err) => console.error('At axios.all', err));
+            endpoints.map((endpoint) => axios.get(endpoint)
+                .then((res) => {
+                    var atualPokemon: IPokemon = {
+                        height: res.data.height,
+                        id: res.data.id,
+                        name: res.data.name,
+                        front_default: res.data.sprites.front_default,
+                        weight: res.data.weight,
+                    }
+                    setPokemons((p) => [...p, atualPokemon]);
+                })
+                .catch((err) => console.error('At axios.get', err)),
+            ));
+
     };
+
+
+    const pokemonFilter = (name: string) => {
+        var filteredPokemons: IPokemon[] = [];
+
+        if (name === "") {
+            getPokemons();
+        }
+
+        for (var i in pokemons) {
+            if (pokemons[i].name.includes(name)) {
+                filteredPokemons.push(pokemons[i]);
+            }
+        }
+
+        setPokemons(filteredPokemons);
+    }
 
 
     pokemons.sort((a, b) => (a.id - b.id));
     return (
         <div>
-            <NavBar />
+            <NavBar pokemonFilter={pokemonFilter} />
             <Container maxWidth="xl" >
                 <Grid container>
                     {
                         pokemons
+                            .sort((a, b) => (a.id - b.id))
+                            .filter((item, index) => pokemons.indexOf(item) === index)
                             .map((pokemon: IPokemon, index: number) => (
-                                index % 2 ?
-                                    <Grid item xs={3} style={{ paddingLeft: "2em", paddingRight: "2em", paddingTop: "2em", paddingBottom: "2em" }} >
-                                        <PokemonCard name={pokemon.name} imageUrl={pokemon.front_default} /*key={key}*/ />
-                                    </Grid>
-                                    : <></>
+                                <Grid item xs={3} style={{ paddingLeft: "2em", paddingRight: "2em", paddingTop: "2em", paddingBottom: "2em" }} >
+                                    <PokemonCard name={pokemon.name} imageUrl={pokemon.front_default} /*key={key}*/ />
+                                </Grid>
                             ))
                     }
                 </Grid>
