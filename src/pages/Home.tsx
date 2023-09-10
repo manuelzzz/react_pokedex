@@ -9,9 +9,16 @@ import { getPokemons } from '../service/GetPokemons';
 export const Home = () => {
     const [defaultPokemons, setDefaultPokemons] = useState<IPokemon[]>([]);
     const [varPokemons, setVarPokemons] = useState<IPokemon[]>([])
+    var firstPokemon = 0;
+    var lastPokemon = 1010;
 
     useEffect(() => {
-        getPokemons(setDefaultPokemons, setVarPokemons);
+        getPokemons(
+            setDefaultPokemons,
+            setVarPokemons,
+            defaultPokemons,
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const pokemonFilter = (name: string) => {
@@ -40,13 +47,19 @@ export const Home = () => {
                             .sort((a, b) => (a.id - b.id))
                             .filter((item, index) => varPokemons.indexOf(item) === index)
                             .map((pokemon: IPokemon, index: number) => (
-                                <Grid item xs={3} style={{ paddingLeft: "2em", paddingRight: "2em" }} >
-                                    <PokemonCard name={pokemon.name} imageUrl={pokemon.front_default} /*key={key}*/ />
-                                </Grid>
+                                firstPokemon <= index && index <= lastPokemon ?
+                                    <Grid item xs={3} style={{ paddingLeft: "1em", paddingRight: "1em" }} >
+                                        <PokemonCard
+                                            name={pokemon.name}
+                                            imageUrl={pokemon.front_default}
+                                            types={pokemon.types}
+                                        />
+                                    </Grid> :
+                                    <></>
                             ))
                     }
-                </Grid>
-            </Container>
+                </Grid >
+            </Container >
         </div >
     );
 }

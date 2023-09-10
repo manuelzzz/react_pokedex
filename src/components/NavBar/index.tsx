@@ -48,7 +48,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function NavBar({ pokemonFilter }: { pokemonFilter: (name: string) => void }) {
+export default function NavBar({ pokemonFilter }: {
+    pokemonFilter: (name: string) => void,
+}) {
     return (
         <Box sx={{ flexGrow: 1, marginBotto: "2em" }}>
             <AppBar position="absolute" sx={{ backgroundColor: "black" }}>
