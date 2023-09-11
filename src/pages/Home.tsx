@@ -29,7 +29,7 @@ export const Home = () => {
         }
 
         for (var i in defaultPokemons) {
-            if (defaultPokemons[i].name.includes(name)) {
+            if (defaultPokemons[i].name.includes(name.toLowerCase())) {
                 filteredPokemons.push(defaultPokemons[i]);
             }
         }
