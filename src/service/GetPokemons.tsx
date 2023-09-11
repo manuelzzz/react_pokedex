@@ -6,12 +6,14 @@ export const getPokemons = (
     setDefaultPokemons: React.Dispatch<React.SetStateAction<IPokemon[]>>,
     setVarPokemons: React.Dispatch<React.SetStateAction<IPokemon[]>>,
     atualList: IPokemon[],
+    firstPokemonId: number,
+    lastPokemonId: number,
 ) => {
-    if (atualList.length < 1008) {
+    if (atualList.length < lastPokemonId) {
 
         var endpoints: string[] = [];
 
-        for (var i = 1; i <= 1010; i++) {
+        for (var i = firstPokemonId; i <= 1010; i++) {
             endpoints.push(`https://pokeapi.co/api/v2/pokemon/${i}`);
         }
 
