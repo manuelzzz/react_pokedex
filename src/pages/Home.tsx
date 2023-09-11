@@ -29,8 +29,26 @@ export const Home = () => {
         }
 
         for (var i in defaultPokemons) {
-            if (defaultPokemons[i].name.includes(name.toLowerCase())) {
-                filteredPokemons.push(defaultPokemons[i]);
+            var types = defaultPokemons[i].types;
+
+            if (types[1]) {
+                if (
+                    defaultPokemons[i].name.includes(name.toLowerCase())
+                    ||
+                    types[0].type.name.includes(name.toLowerCase())
+                    ||
+                    types[1].type.name.includes(name.toLowerCase())
+                ) {
+                    filteredPokemons.push(defaultPokemons[i]);
+                }
+            } else {
+                if (
+                    defaultPokemons[i].name.includes(name.toLowerCase())
+                    ||
+                    types[0].type.name.includes(name.toLowerCase())
+                ) {
+                    filteredPokemons.push(defaultPokemons[i]);
+                }
             }
         }
 
